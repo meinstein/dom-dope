@@ -94,7 +94,7 @@ const Component = dope => {
 
   return dope.make('a', {
     text: 'Link to nowhere.',
-    onClick: () => router.push('/foo')
+    onClick: () => router.push('/nowhere')
   })
 }
 ```
