@@ -1,0 +1,34 @@
+{
+  "name": "domdope",
+  "version": "0.0.1",
+  "description": "A dope JavaScript library for creating user interfaces.",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "npm t -- --watch",
+    "build:umd": "parcel build src/index.js -d dist/umd --global DomDope --no-cache --no-source-maps",
+    "build": "npm run build:umd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meinstein/domdope.git"
+  },
+  "keywords": [
+    "domdope",
+    "dope",
+    "dom",
+    "library",
+    "components"
+  ],
+  "author": "Maximillian Einstein",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/meinstein/domdope/issues"
+  },
+  "homepage": "https://github.com/meinstein/domdope#readme",
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "parcel": "^1.11.0"
+  }
+}

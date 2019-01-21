@@ -1,0 +1,40 @@
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="../dist/umd/index.js"></script>
+  <script>
+    // Async func
+    const waitForIt = () => {
+      return new Promise(resolve => setTimeout(resolve, 1000))
+    }
+    // Nav component
+    const Nav = (dope, props) => {
+      return dope.make('nav', {
+        text: props.text
+      })
+    }
+    // Footer component
+    const Footer = dope => {
+      dope.initialState = { title: '' }
+      dope.onMount(async () => {
+        await waitForIt()
+        dope.state = { title: 'Goodbye.' }
+      })
+      return dope.make('footer', {
+        text: dope.state.title
+      })
+    }
+    // root component
+    const Root = dope => {
+      const NavWithProps = dope.inject(Nav, { text: 'Hello.' })
+      return dope.make('div', {
+        children: [NavWithProps, Footer]
+      })
+    }
+    // Add dope
+    const rootEl = document.getElementById('root')
+    const dope = new DomDope(Root, rootEl)
+    dope.render()
+  </script>
+</html>
