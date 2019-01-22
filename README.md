@@ -4,7 +4,7 @@ A dope JavaScript library for creating user interfaces.
 
 ## **Introduction**
 
-DomDope gives each of your components a tiny hit of dope so that you can more easily build user interfaces.
+DomDope supplies every component in your tree with a bit of dope so that you can more easily build user interfaces.
 
 ## **Installing**
 
@@ -55,7 +55,8 @@ const Component = dope => {
 
   dope.onMount(async () => {
     const response = await fetch('../data/is/dope')
-    dope.state.data = await response.json()
+    const data = await response.json()
+    dope.state = { data }
   })
 
   if (!dope.state.data) {
