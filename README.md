@@ -104,3 +104,4 @@ const Component = dope => {
 
 - https://github.com/meinstein/domdope/blob/master/demo/index.html
 - https://github.com/meinstein/blog
+- https://github.com/meinstein/turn-me-on-lamps
