@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "module": "src/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "npm t -- --watch"
   },
   "repository": {
     "type": "git",

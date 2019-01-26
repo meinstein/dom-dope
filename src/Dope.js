@@ -36,8 +36,7 @@ class Dope {
         if (typeof child === 'function') {
           return child
         }
-        // The element was made inside a component rather than being...
-        // ...returned by it. Therefore, it cannot component root.
+        // This element was invoked immediately.
         child.isComponentRoot = false
         return () => child
       })

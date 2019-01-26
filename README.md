@@ -4,7 +4,7 @@ A dope JavaScript library for creating user interfaces.
 
 ## **Introduction**
 
-DomDope supplies every component in your tree with a bit of dope so that you can more easily build user interfaces.
+DomDope supplies every component in a tree with a bit of dope so that you can more easily build user interfaces.
 
 ## **Getting Started**
 
@@ -18,7 +18,7 @@ DomDope supplies every component in your tree with a bit of dope so that you can
   const rootElement = document.getElementById('root')
   // Instantiate DomDope with above roots.
   const dope = new DomDope(RootComponent, rootElement)
-  // Render to give your component tree a bit of dope.
+  // Give the component tree the dope it needs.
   dope.render()
 </script>
 ```
@@ -99,7 +99,7 @@ Run a simple HTTP server this project's root folder:
 python -m SimpleHTTPServer 8080
 ```
 
-And go to `localhost:8080/demo/index.html`
+And go to `localhost:8080/demo`
 
 ## **Examples**
 
