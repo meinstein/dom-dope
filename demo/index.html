@@ -11,8 +11,6 @@
 
     // Nav component
     const Nav = (dope, props) => {
-      setInterval(() => props.location.push('/' + String(Math.random())), 2000)
-      console.log(props.location.pathname)
       return dope.make('nav', {
         text: props.text
       })

@@ -11,6 +11,15 @@ class DomDope {
     this._render = this._render.bind(this)
   }
 
+  get _symbols() {
+    return Object.getOwnPropertySymbols(this._components)
+  }
+
+  get _dope() {
+    // Pass render and upate hooks to dope.
+    return new Dope(this._update, this._render)
+  }
+
   _findOrCreateDope(component) {
     let dope = null
 
@@ -24,22 +33,12 @@ class DomDope {
     return dope ? dope : this._dope
   }
 
-  get _symbols() {
-    return Object.getOwnPropertySymbols(this._components)
-  }
-
-  get _dope() {
-    // Pass render and upate hooks to dope.
-    return new Dope(this._update, this._render)
-  }
-
   _createElement({ component, parentSymbol, dope }) {
     // A component is a function that gets a dope instance as its first arg.
     const node = component(dope)
     // Place el var into scope.
     let el = null
-    // Only continue element creation logic if there's an element present.
-    // In some cases, node.element could be null.
+    // Continue element creation logic if an element present. Could be null.
     if (node.element) {
       el = document.createElement(node.element)
 
@@ -58,9 +57,11 @@ class DomDope {
 
         if (children) {
           children.forEach(child => {
+            //
             const childDope = this._findOrCreateDope(child)
-            // create an element out of each child
+            // Create element from each child.
             const childNode = this._createElement({ component: child, parentSymbol: node.symbol, dope: childDope })
+            // Make sure a valid DOM node was generated. Could be null.
             if (childNode) {
               el.appendChild(childNode)
             }
@@ -78,13 +79,10 @@ class DomDope {
       }
     }
 
-    // Only add the root node from each component to the map.
-    // The root node is the immediate func(s) returned by each...
-    // ... call to dope.createElement(...).
+    // Add the root node from each component to the map.
     if (node.isComponentRoot) {
+      // Do not reset onMount if symbol has been seen before.
       const hasSymbol = this._components[node.symbol]
-      // Do not include onMount func if the symbol has...
-      // ...already been registered to the node map.
       this._components[node.symbol] = {
         dope,
         element: el,
@@ -121,7 +119,7 @@ class DomDope {
       // The root component has no parentSymbol, so re-render entire tree.
       this._render()
     }
-    // Handle any onMounts
+    // Handle any onMounts.
     this._invokeOnMount()
   }
 

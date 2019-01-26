@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "A dope JavaScript library for creating user interfaces.",
   "main": "src/index.js",
-  "module": "dist/cjs/index.js",
+  "module": "src/index.js",
   "scripts": {
     "test": "jest"
   },
