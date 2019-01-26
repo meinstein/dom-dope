@@ -5,8 +5,6 @@ class DomDope {
     this._components = {}
     this._rootComponent = rootComponent
     this._rootNode = rootNode
-    // Full render when window state is altered... for now.
-    window.onpopstate = () => this._render()
     // These methods are passed to new instances of Dope.
     // Must bind here in order to have correct this ref.
     this._update = this._update.bind(this)
@@ -16,7 +14,7 @@ class DomDope {
   _findOrCreateDope(component) {
     let dope = null
 
-    Object.getOwnPropertySymbols(this._components).some(symbol => {
+    this._symbols.some(symbol => {
       if (this._components[symbol].component === component) {
         dope = this._components[symbol].dope
         return true
@@ -26,9 +24,13 @@ class DomDope {
     return dope ? dope : this._dope
   }
 
+  get _symbols() {
+    return Object.getOwnPropertySymbols(this._components)
+  }
+
   get _dope() {
     // Pass render and upate hooks to dope.
-    return new Dope(this._render, this._update)
+    return new Dope(this._update, this._render)
   }
 
   _createElement({ component, parentSymbol, dope }) {
@@ -88,6 +90,7 @@ class DomDope {
         element: el,
         component,
         parentSymbol,
+        withRouter: node._withRouter,
         onMount: hasSymbol ? null : node.onMount
       }
     }
@@ -96,7 +99,7 @@ class DomDope {
   }
 
   _invokeOnMount() {
-    Object.getOwnPropertySymbols(this._components).forEach(symbol => {
+    this._symbols.forEach(symbol => {
       const { onMount } = this._components[symbol]
       if (onMount) {
         onMount()
@@ -108,11 +111,7 @@ class DomDope {
     const { element: oldChild, component, parentSymbol } = this._components[symbol]
     // If the symbol is associated with dom node that was already previously rendered
     if (oldChild) {
-      const newChild = this._createElement({
-        component,
-        parentSymbol,
-        dope: this._components[symbol].dope
-      })
+      const newChild = this._createElement({ component, parentSymbol, dope: this._components[symbol].dope })
       const { parentNode } = oldChild
       parentNode.replaceChild(newChild, oldChild)
     } else if (parentSymbol) {
@@ -122,6 +121,7 @@ class DomDope {
       // The root component has no parentSymbol, so re-render entire tree.
       this._render()
     }
+    // Handle any onMounts
     this._invokeOnMount()
   }
 

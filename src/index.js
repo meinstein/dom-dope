@@ -1,7 +1,6 @@
 import DomDope from './Dom.js'
 import withProps from './withProps.js'
+import withRouter from './withRouter.js'
 
-// Default export
 export default DomDope
-// Other exports
-export { withProps }
+export { withProps, withRouter }

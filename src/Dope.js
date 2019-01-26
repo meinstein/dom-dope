@@ -1,49 +1,19 @@
 class Dope {
-  constructor(render, update) {
+  constructor(update, render) {
     this._symbol = Symbol()
     this._state = {}
     this._onMount = null
-    this._render = render
     this._update = () => update(this._symbol)
+    this._render = render
   }
 
-  onMount(cb) {
-    this._onMount = cb
-  }
-
-  make(element, props = {}) {
-    // Check for children and convert to funcs accordingly.
-    if (props.children) {
-      props.children = props.children.map(child => {
-        if (typeof child === 'function') {
-          return child
-        }
-        // This element was instantiated inside a component rather...
-        // ...than being returned by it, so cannot be componnet's root.
-        child.isComponentRoot = false
-        return () => child
-      })
-    }
-
-    return {
-      element,
-      props,
-      isComponentRoot: true,
-      symbol: this._symbol,
-      onMount: this._onMount
-    }
-  }
-
-  // Initial state must be an object.
   set initialState(initialState) {
-    // Only set initial state has not yet been set.
-    // This is to avoid re-setting on re-renders.
+    // This check is to avoid resetting on each new render.
     if (!Object.keys(this._state).length === 0) {
       this._state = initialState
     }
   }
 
-  // New state must be an object.
   set state(newState) {
     this._state = {
       ...this._state,
@@ -56,17 +26,29 @@ class Dope {
     return this._state
   }
 
-  router() {
+  onMount(cb) {
+    this._onMount = cb
+  }
+
+  make(element, props = {}) {
+    if (props.children) {
+      props.children = props.children.map(child => {
+        if (typeof child === 'function') {
+          return child
+        }
+        // The element was made inside a component rather than being...
+        // ...returned by it. Therefore, it cannot component root.
+        child.isComponentRoot = false
+        return () => child
+      })
+    }
+
     return {
-      route: window.location.pathname,
-      push: pathname => {
-        window.history.pushState({}, pathname, window.location.origin + pathname)
-        this._render()
-      },
-      redirect: pathname => {
-        window.history.replaceState({}, pathname, window.location.origin + pathname)
-        this._render()
-      }
+      element,
+      props,
+      isComponentRoot: true,
+      symbol: this._symbol,
+      onMount: this._onMount
     }
   }
 }
