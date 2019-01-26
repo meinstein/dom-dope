@@ -2,8 +2,8 @@
   <body>
     <div id="root"></div>
   </body>
-  <script src="../dist/umd/index.js"></script>
-  <script>
+  <script type="module">
+    import DomDope, { withProps } from '../src/index.js'
     // Async func
     const waitForIt = () => {
       return new Promise(resolve => setTimeout(resolve, 1000))
@@ -27,7 +27,7 @@
     }
     // root component
     const Root = dope => {
-      const NavWithProps = dope.inject(Nav, { text: 'Hello.' })
+      const NavWithProps = withProps(Nav, { text: 'Hello.' })
       return dope.make('div', {
         children: [NavWithProps, Footer]
       })

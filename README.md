@@ -100,8 +100,17 @@ const Component = dope => {
 }
 ```
 
-## **EXAMPLES**
+## **Demo**
 
-- https://github.com/meinstein/domdope/blob/master/demo/index.html
+Run a simple HTTP server this project's root folder:
+
+```
+python -m SimpleHTTPServer 8080
+```
+
+And then go to `localhost:8080/demo/index.html`
+
+## **Examples**
+
 - https://github.com/meinstein/blog
 - https://github.com/meinstein/turn-me-on-lamps

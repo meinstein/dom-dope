@@ -1,4 +1,4 @@
-module.exports = class Dope {
+class Dope {
   constructor(render, update) {
     this._symbol = Symbol()
     this._state = {}
@@ -9,12 +9,6 @@ module.exports = class Dope {
 
   onMount(cb) {
     this._onMount = cb
-  }
-
-  inject(Component, props) {
-    return dope => {
-      return Component(dope, props)
-    }
   }
 
   make(element, props = {}) {
@@ -76,3 +70,5 @@ module.exports = class Dope {
     }
   }
 }
+
+export default Dope

@@ -1,6 +1,6 @@
-const Dope = require('./Dope')
+import Dope from './Dope.js'
 
-module.exports = class DopeDOM {
+class DomDope {
   constructor(rootComponent, rootNode) {
     this._components = {}
     this._rootComponent = rootComponent
@@ -137,3 +137,5 @@ module.exports = class DopeDOM {
     this._render()
   }
 }
+
+export default DomDope

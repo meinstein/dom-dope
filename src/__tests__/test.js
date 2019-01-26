@@ -1,4 +1,4 @@
-const DomDope = require('..')
+import DomDope from '..'
 
 /**
  * Helpers
