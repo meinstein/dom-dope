@@ -59,7 +59,7 @@ const Component = dope => {
 // Use withProps to inject props into components.
 import { withProps } from 'https://unpkg.com/domdope/src/index.js'
 
-const NavContent = (dope, props) => {
+const Content = (dope, props) => {
   return dope.make('div', { text: props.msg })
 }
 
@@ -67,7 +67,7 @@ const Nav = dope => {
   const ContentWithProps = withProps(Content, { msg: '😎' })
 
   return dope.make('nav', {
-    children: [Nav]
+    children: [ContentWithProps]
   })
 }
 ```
