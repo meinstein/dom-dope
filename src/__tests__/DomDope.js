@@ -1,4 +1,4 @@
-const DomDope = require('..')
+import DomDope, { withProps } from '..'
 
 /**
  * Helpers
@@ -69,7 +69,7 @@ test('Can pass props', () => {
   }
   // Root
   const Root = dope => {
-    const ChildWithProps = dope.inject(Child, { msg: 'More dope.' })
+    const ChildWithProps = withProps(Child, { msg: 'More dope.' })
     return dope.make('div', { children: [ChildWithProps] })
   }
   // Render

@@ -1,22 +1,29 @@
-const Dope = require('./Dope')
+import Dope from './Dope.js'
 
-module.exports = class DopeDOM {
+class DomDope {
   constructor(rootComponent, rootNode) {
     this._components = {}
     this._rootComponent = rootComponent
     this._rootNode = rootNode
-    // Full render when window state is altered... for now.
-    window.onpopstate = () => this._render()
     // These methods are passed to new instances of Dope.
     // Must bind here in order to have correct this ref.
     this._update = this._update.bind(this)
     this._render = this._render.bind(this)
   }
 
+  get _symbols() {
+    return Object.getOwnPropertySymbols(this._components)
+  }
+
+  get _dope() {
+    // Pass render and upate hooks to dope.
+    return new Dope(this._update, this._render)
+  }
+
   _findOrCreateDope(component) {
     let dope = null
 
-    Object.getOwnPropertySymbols(this._components).some(symbol => {
+    this._symbols.some(symbol => {
       if (this._components[symbol].component === component) {
         dope = this._components[symbol].dope
         return true
@@ -26,18 +33,12 @@ module.exports = class DopeDOM {
     return dope ? dope : this._dope
   }
 
-  get _dope() {
-    // Pass render and upate hooks to dope.
-    return new Dope(this._render, this._update)
-  }
-
   _createElement({ component, parentSymbol, dope }) {
     // A component is a function that gets a dope instance as its first arg.
     const node = component(dope)
     // Place el var into scope.
     let el = null
-    // Only continue element creation logic if there's an element present.
-    // In some cases, node.element could be null.
+    // Continue element creation logic if an element present. Could be null.
     if (node.element) {
       el = document.createElement(node.element)
 
@@ -56,9 +57,11 @@ module.exports = class DopeDOM {
 
         if (children) {
           children.forEach(child => {
+            //
             const childDope = this._findOrCreateDope(child)
-            // create an element out of each child
+            // Create element from each child.
             const childNode = this._createElement({ component: child, parentSymbol: node.symbol, dope: childDope })
+            // Make sure a valid DOM node was generated. Could be null.
             if (childNode) {
               el.appendChild(childNode)
             }
@@ -76,18 +79,16 @@ module.exports = class DopeDOM {
       }
     }
 
-    // Only add the root node from each component to the map.
-    // The root node is the immediate func(s) returned by each...
-    // ... call to dope.createElement(...).
+    // Add the root node from each component to the map.
     if (node.isComponentRoot) {
+      // Do not reset onMount if symbol has been seen before.
       const hasSymbol = this._components[node.symbol]
-      // Do not include onMount func if the symbol has...
-      // ...already been registered to the node map.
       this._components[node.symbol] = {
         dope,
         element: el,
         component,
         parentSymbol,
+        withRouter: node._withRouter,
         onMount: hasSymbol ? null : node.onMount
       }
     }
@@ -96,7 +97,7 @@ module.exports = class DopeDOM {
   }
 
   _invokeOnMount() {
-    Object.getOwnPropertySymbols(this._components).forEach(symbol => {
+    this._symbols.forEach(symbol => {
       const { onMount } = this._components[symbol]
       if (onMount) {
         onMount()
@@ -108,11 +109,7 @@ module.exports = class DopeDOM {
     const { element: oldChild, component, parentSymbol } = this._components[symbol]
     // If the symbol is associated with dom node that was already previously rendered
     if (oldChild) {
-      const newChild = this._createElement({
-        component,
-        parentSymbol,
-        dope: this._components[symbol].dope
-      })
+      const newChild = this._createElement({ component, parentSymbol, dope: this._components[symbol].dope })
       const { parentNode } = oldChild
       parentNode.replaceChild(newChild, oldChild)
     } else if (parentSymbol) {
@@ -122,6 +119,7 @@ module.exports = class DopeDOM {
       // The root component has no parentSymbol, so re-render entire tree.
       this._render()
     }
+    // Handle any onMounts.
     this._invokeOnMount()
   }
 
@@ -137,3 +135,5 @@ module.exports = class DopeDOM {
     this._render()
   }
 }
+
+export default DomDope

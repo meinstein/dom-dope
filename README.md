@@ -4,37 +4,23 @@ A dope JavaScript library for creating user interfaces.
 
 ## **Introduction**
 
-DomDope supplies every component in your tree with a bit of dope so that you can more easily build user interfaces.
-
-## **Installing**
-
-```html
-<!-- Expose DomDope as UMD -->
-<script src="https://unpkg.com/domdope/dist/umd/index.js"></script>
-```
-
-```shell
-npm i domdope
-```
+DomDope supplies every component in a tree with a bit of dope so that you can more easily build user interfaces.
 
 ## **Getting Started**
 
-```js
-// UMD
-const dope = new DomDope(...)
-```
-
-```js
-// CommonJS
-import Dope from 'domdope'
-const dope = new Dope(...)
-```
-
-```js
-// Give your component tree a bit of dope.
-const rootElement = document.getElementById('root')
-const dope = new DomDope(RootComponent, rootElement)
-dope.render()
+```html
+<script type="module">
+  // No need for bundlers!
+  import DomDope from 'https://unpkg.com/domdope/src/index.js'
+  // The Root component
+  const RootComponent = dope => dope.make('div')
+  // The root element where everything gets mounted.
+  const rootElement = document.getElementById('root')
+  // Instantiate DomDope with above roots.
+  const dope = new DomDope(RootComponent, rootElement)
+  // Give the component tree the dope it needs.
+  dope.render()
+</script>
 ```
 
 ## **Interface**
@@ -70,13 +56,15 @@ const Component = dope => {
 ```
 
 ```js
-// Use dope to inject props.
+// Use withProps to inject props into components.
+import { withProps } from 'https://unpkg.com/domdope/src/index.js'
+
 const NavContent = (dope, props) => {
   return dope.make('div', { text: props.msg })
 }
 
 const Nav = dope => {
-  const ContentWithProps = dope.inject(Content, { msg: '😎' })
+  const ContentWithProps = withProps(Content, { msg: '😎' })
 
   return dope.make('nav', {
     children: [Nav]
@@ -85,23 +73,35 @@ const Nav = dope => {
 ```
 
 ```js
-// Use dope as a router.
-const Component = dope => {
-  const router = dope.router()
+// Use withRouter to inject routing-related props into components.
+import { withRouter } from 'https://unpkg.com/domdope/src/index.js'
 
-  if (router.route !== '/') {
-    router.redirect('/')
+// Use dope as a router.
+const Component = (dope, props) => {
+  if (props.router.pathname !== '/') {
+    props.router.redirectTo('/')
   }
 
   return dope.make('a', {
     text: 'Link to nowhere.',
-    onClick: () => router.push('/nowhere')
+    onClick: () => props.router.goTo('/nowhere')
   })
 }
+
+export default withRouter(Component)
 ```
 
-## **EXAMPLES**
+## **Demo**
 
-- https://github.com/meinstein/domdope/blob/master/demo/index.html
+Run a simple HTTP server this project's root folder:
+
+```
+python -m SimpleHTTPServer 8080
+```
+
+And go to `localhost:8080/demo`
+
+## **Examples**
+
 - https://github.com/meinstein/blog
 - https://github.com/meinstein/turn-me-on-lamps

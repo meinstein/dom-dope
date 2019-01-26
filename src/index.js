@@ -1,3 +1,6 @@
-const DopeDom = require('./Dom')
+import DomDope from './Dom.js'
+import withProps from './withProps.js'
+import withRouter from './withRouter.js'
 
-module.exports = DopeDom
+export default DomDope
+export { withProps, withRouter }

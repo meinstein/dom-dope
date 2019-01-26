@@ -6,10 +6,7 @@
   "module": "src/index.js",
   "scripts": {
     "test": "jest",
-    "test:watch": "npm t -- --watch",
-    "build:umd": "parcel build src/index.js -d dist/umd --global DomDope --no-cache --no-source-maps",
-    "build": "npm run build:umd",
-    "prepublish": "npm run build"
+    "test:watch": "npm t -- --watch"
   },
   "repository": {
     "type": "git",
@@ -29,7 +26,8 @@
   },
   "homepage": "https://github.com/meinstein/domdope#readme",
   "devDependencies": {
-    "jest": "^23.6.0",
-    "parcel": "^1.11.0"
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "jest": "^24.0.0"
   }
 }
