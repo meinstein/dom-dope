@@ -4,14 +4,14 @@ A dope JavaScript library for creating user interfaces.
 
 ## **Introduction**
 
-DomDope supplies every component in a tree with a bit of dope so that you can more easily build user interfaces.
+DomDope gives every component in your tree a bit of dope so that you can more easily build user interfaces.
 
 ## **Getting Started**
 
 ```html
 <script type="module">
   // No need for bundlers!
-  import DomDope from 'https://unpkg.com/domdope/src/index.js'
+  import DomDope from 'https://unpkg.com/domdope'
   // The Root component
   const RootComponent = dope => dope.make('div')
   // The root element where everything gets mounted.
@@ -57,7 +57,7 @@ const Component = dope => {
 
 ```js
 // Use withProps to inject props into components.
-import { withProps } from 'https://unpkg.com/domdope/src/index.js'
+import { withProps } from 'https://unpkg.com/domdope'
 
 const Content = (dope, props) => {
   return dope.make('div', { text: props.msg })
@@ -74,7 +74,7 @@ const Nav = dope => {
 
 ```js
 // Use withRouter to inject routing-related props into components.
-import { withRouter } from 'https://unpkg.com/domdope/src/index.js'
+import { withRouter } from 'https://unpkg.com/domdope'
 
 // Use dope as a router.
 const Component = (dope, props) => {
@@ -93,7 +93,7 @@ export default withRouter(Component)
 
 ## **Demo**
 
-Run a simple HTTP server this project's root folder:
+Run a simple HTTP server from this project's root folder:
 
 ```
 python -m SimpleHTTPServer 8080
