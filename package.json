@@ -1,6 +1,6 @@
 {
   "name": "domdope",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A dope JavaScript library for creating user interfaces.",
   "main": "src/index.js",
   "module": "src/index.js",
